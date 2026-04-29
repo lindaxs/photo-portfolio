@@ -5,95 +5,192 @@
 }
 
 body {
-  background-color: #f5f0e8;
+  overflow-x: hidden;
+  background-color: #ede7d9;
   background-image:
-    radial-gradient(circle at 20% 30%, rgba(210, 180, 140, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(180, 160, 120, 0.1) 0%, transparent 50%);
+    radial-gradient(circle, #c4b89a 1px, transparent 1px),
+    radial-gradient(circle at 20% 30%, rgba(210, 180, 140, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(180, 160, 120, 0.15) 0%, transparent 50%);
+  background-size: 28px 28px, 100% 100%, 100% 100%;
   min-height: 100vh;
   font-family: 'Caveat', cursive;
   color: #3a2e20;
 }
 
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.35;
+}
+
 header {
   text-align: center;
-  padding: 3rem 1rem 1.5rem;
+  padding: 3rem 1rem 0;
+  position: relative;
+  z-index: 10;
 }
 
 header h1 {
   font-family: 'Playfair Display', serif;
-  font-size: 2.8rem;
+  font-size: 3.4rem;
   font-weight: 400;
-  letter-spacing: 0.02em;
-  color: #3a2e20;
-}
-
-header h1 em {
   font-style: italic;
+  letter-spacing: 0.04em;
+  color: #3a2e20;
+  animation: fadein 1.8s ease forwards;
+  opacity: 0;
 }
 
-.subtitle {
-  font-size: 1.3rem;
-  color: #7a6a50;
-  margin-top: 0.4rem;
-  letter-spacing: 0.05em;
+.squiggle {
+  display: block;
+  margin: 6px auto 0;
+  width: 160px;
+  opacity: 0;
+  animation: fadein 2.2s ease forwards;
 }
 
-.gallery {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 2.5rem;
-  padding: 3rem 2rem 4rem;
-  max-width: 1100px;
-  margin: 0 auto;
+@keyframes fadein {
+  from { opacity: 0; letter-spacing: 0.14em; }
+  to   { opacity: 1; letter-spacing: 0.04em; }
 }
 
-.polaroid {
-  background: #fffdf7;
-  padding: 12px 12px 48px 12px;
-  box-shadow:
-    0 4px 8px rgba(0,0,0,0.12),
-    0 1px 3px rgba(0,0,0,0.08);
-  width: 280px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+@keyframes overexpose {
+  0%   { opacity: 1;   letter-spacing: 0.04em; filter: brightness(1);   }
+  35%  { opacity: 0.7; letter-spacing: 0.13em; filter: brightness(1.6); }
+  100% { opacity: 1;   letter-spacing: 0.04em; filter: brightness(1);   }
+}
+
+header h1:hover {
+  animation: overexpose 0.7s ease forwards;
   cursor: default;
 }
 
-.polaroid:hover {
-  transform: scale(1.04) rotate(0deg) !important;
-  box-shadow:
-    0 12px 28px rgba(0,0,0,0.18),
-    0 4px 8px rgba(0,0,0,0.1);
-  z-index: 10;
-  position: relative;
-}
-
-.polaroid img {
+/* flex row with staggered offsets */
+.gallery {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  padding: 20px 60px 40px 20px;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  display: block;
+  margin: 0.5rem auto 0;
 }
 
-.polaroid figcaption {
-  text-align: center;
-  margin-top: 10px;
-  font-size: 1.2rem;
-  color: #5a4a35;
-  font-family: 'Caveat', cursive;
+.polaroid {
+  flex-shrink: 0;
+  background: #fffdf7;
+  padding: 10px 10px 36px 10px;
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.18),
+    0 1px 2px rgba(0,0,0,0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  position: relative;
+  margin-left: -35px;
 }
 
-/* Each card gets a unique tilt */
-.tilt-left       { transform: rotate(-3deg); }
-.tilt-right      { transform: rotate(2.5deg); }
-.tilt-slight     { transform: rotate(-1deg); }
-.tilt-left-more  { transform: rotate(-4.5deg); }
-.tilt-right-more { transform: rotate(3.5deg); }
+.polaroid:first-child {
+  margin-left: 0;
+}
+
+/* Portrait height = landscape width so all images share the same dominant dimension */
+.polaroid { width: auto; }
+.polaroid.landscape img { width: clamp(200px, 20vw, 320px); height: auto; display: block; }
+.polaroid.portrait img  { height: clamp(200px, 20vw, 320px); width: auto; display: block; }
+
+.polaroid:hover {
+  transform: translateY(var(--ty)) scale(1.05) rotate(0deg) !important;
+  box-shadow:
+    0 18px 45px rgba(0,0,0,0.28),
+    0 4px 10px rgba(0,0,0,0.12);
+  z-index: 20;
+}
+
+/* staggered via translateY so hover preserves the offset */
+.p1 { --ty: 0px;  transform: translateY(0px)  rotate(-5deg); }
+.p2 { --ty: 35px; transform: translateY(35px) rotate(-7deg); }
+.p3 { --ty: 70px; transform: translateY(70px) rotate(-3deg); }
+.p4 { --ty: 25px; transform: translateY(25px) rotate(6deg);  }
+.p5 { --ty: 10px; transform: translateY(10px) rotate(-4deg); }
+
+/* tape strips */
+.tape {
+  position: absolute;
+  background: rgba(255, 215, 110, 0.55);
+  border-radius: 2px;
+  z-index: 5;
+  width: 58px;
+  height: 20px;
+}
+
+.tape-tc {
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+}
+
+.tape-tl {
+  top: -10px;
+  left: 12px;
+  transform: rotate(-35deg);
+  width: 48px;
+}
+
+.tape-tr {
+  top: -10px;
+  right: 12px;
+  transform: rotate(32deg);
+  width: 48px;
+}
+
+.tape-br {
+  bottom: 12px;
+  right: -10px;
+  transform: rotate(-35deg);
+  width: 48px;
+}
 
 footer {
   text-align: center;
-  padding: 1.5rem;
+  padding: 1.5rem 1rem 3rem;
   font-size: 1rem;
   color: #9a8a70;
+  position: relative;
+  z-index: 10;
+}
+
+#lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  cursor: zoom-out;
+}
+
+#lightbox.active { display: flex; }
+
+#lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 900px) {
+  .gallery {
+    flex-wrap: wrap;
+    gap: 3rem;
+    padding: 2rem;
+  }
+  .polaroid { margin-top: 0 !important; }
 }

@@ -3,42 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Linda's Photo Journal</title>
+  <title>Overexposed</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Caveat:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
 
   <header>
-    <h1>Linda's Photo Journal</h1>
-    <p class="subtitle">city streets &amp; weekend wanderings</p>
+    <h1>Overexposed</h1>
+    <svg class="squiggle" viewBox="0 0 200 12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,6 Q25,0 50,6 Q75,12 100,6 Q125,0 150,6 Q175,12 200,6" fill="none" stroke="#b09070" stroke-width="1.5"/>
+    </svg>
   </header>
 
   <main class="gallery">
 
-    <figure class="polaroid tilt-left">
+    <figure class="polaroid portrait p1" onclick="openLightbox('images/DSC03649.JPG')">
+      <div class="tape tape-tl"></div>
+      <div class="tape tape-br"></div>
       <img src="images/DSC03649.JPG" alt="Photo 1" />
-      <figcaption>corner light</figcaption>
     </figure>
 
-    <figure class="polaroid tilt-right">
-      <img src="images/DSC03699.JPG" alt="Photo 2" />
-      <figcaption>golden hour, somewhere</figcaption>
+    <figure class="polaroid landscape p2" onclick="openLightbox('images/DSC03811.JPG')">
+      <div class="tape tape-tc"></div>
+      <img src="images/DSC03811.JPG" alt="Photo 2" />
     </figure>
 
-    <figure class="polaroid tilt-slight">
-      <img src="images/DSC03811.JPG" alt="Photo 3" />
-      <figcaption>saturday, the vineyard</figcaption>
+    <figure class="polaroid landscape p3" onclick="openLightbox('images/DSC03990.JPG')">
+      <div class="tape tape-tc"></div>
+      <div class="tape tape-tr"></div>
+      <img src="images/DSC03990.JPG" alt="Photo 3" />
     </figure>
 
-    <figure class="polaroid tilt-left-more">
-      <img src="images/DSC03990.JPG" alt="Photo 4" />
-      <figcaption>between the vines</figcaption>
+    <figure class="polaroid landscape p4" onclick="openLightbox('images/DSC03991.JPG')">
+      <div class="tape tape-tc"></div>
+      <img src="images/DSC03991.JPG" alt="Photo 4" />
     </figure>
 
-    <figure class="polaroid tilt-right-more">
-      <img src="images/DSC03991.JPG" alt="Photo 5" />
-      <figcaption>city after rain</figcaption>
+    <figure class="polaroid portrait p5" onclick="openLightbox('images/DSC03699.JPG')">
+      <div class="tape tape-tc"></div>
+      <img src="images/DSC03699.JPG" alt="Photo 5" />
     </figure>
 
   </main>
@@ -46,6 +50,24 @@
   <footer>
     <p>&#x2728; photo class, spring 2026</p>
   </footer>
+
+  <div id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <script>
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('active');
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+    }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+  </script>
 
 </body>
 </html>
