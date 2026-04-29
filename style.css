@@ -29,9 +29,38 @@ body::after {
   opacity: 0.35;
 }
 
+.filmstrip {
+  width: 100%;
+  height: 48px;
+  background: #3a2e20;
+  position: relative;
+  z-index: 10;
+}
+
+.filmstrip::before,
+.filmstrip::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 5px,
+    #ede7d9 5px,
+    #ede7d9 17px,
+    transparent 17px,
+    transparent 26px
+  );
+}
+
+.filmstrip::before { top: 8px; }
+.filmstrip::after  { bottom: 8px; }
+
 header {
   text-align: center;
-  padding: 3rem 1rem 0;
+  padding: 3rem 1rem 1.5rem;
   position: relative;
   z-index: 10;
 }
@@ -114,11 +143,11 @@ header h1:hover {
 }
 
 /* staggered via translateY so hover preserves the offset */
-.p1 { --ty: 0px;  transform: translateY(0px)  rotate(-5deg); }
-.p2 { --ty: 35px; transform: translateY(35px) rotate(-7deg); }
-.p3 { --ty: 70px; transform: translateY(70px) rotate(-3deg); }
-.p4 { --ty: 25px; transform: translateY(25px) rotate(6deg);  }
-.p5 { --ty: 10px; transform: translateY(10px) rotate(-4deg); }
+.p1 { --ty: 0px;   transform: translateY(0px)   rotate(-5deg); }
+.p2 { --ty: 150px; transform: translateY(150px) rotate(-7deg); }
+.p3 { --ty: 0px;   transform: translateY(0px)   rotate(-3deg); }
+.p4 { --ty: 150px; transform: translateY(150px) rotate(6deg);  }
+.p5 { --ty: 0px;   transform: translateY(0px)   rotate(-4deg); }
 
 /* tape strips */
 .tape {
